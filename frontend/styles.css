@@ -1,0 +1,748 @@
+/* Example Section (simplified) */
+.example-section__header { display:flex; align-items:center; justify-content: space-between; gap:12px; margin-bottom:8px; }
+.code-actions { display:flex; gap:6px; }
+.code-btn { background: var(--color-surface-alt); border:1px solid var(--color-border); padding:6px 14px; font-size:.7rem; line-height:1; border-radius:20px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; font-weight:600; letter-spacing:.6px; color: var(--color-text-soft); box-shadow: var(--shadow-sm); transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast); text-transform: uppercase; }
+.code-btn:hover { background: var(--color-primary); color:#fff; transform: translateY(-2px); }
+.code-btn:active { transform: translateY(0); }
+.code-btn:focus-visible { outline:none; box-shadow: var(--shadow-focus); }
+.code-block { white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; }
+/*
+  styles.css - Resume Analyzer & Builder
+  This file contains all the styles for the web application.
+  Detailed comments are provided for beginners to understand each section and property.
+*/
+
+/*
+  The body selector styles the main page background and layout.
+  - font-family: Sets the default font for the page.
+  - margin/padding: Removes default spacing.
+  - display: flex, flex-direction, align-items, justify-content: Centers content vertically and horizontally.
+  - min-height: Ensures the page takes at least the full viewport height.
+  - background: Adds a gradient background.
+  - animation: Animates the background gradient for a modern look.
+*/
+/*
+  === Modern Design System Enhancements ===
+  Introducing CSS custom properties (design tokens), dark mode, accessible focus styles,
+  improved layout structure, smooth micro-interactions, and componentized utility classes.
+*/
+
+:root {
+  --font-sans: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 2px 4px rgba(20, 25, 40, .06), 0 1px 2px rgba(20, 25, 40, .04);
+  --shadow-md: 0 6px 18px -4px rgba(20, 25, 40, .12), 0 2px 6px rgba(20, 25, 40, .06);
+  --shadow-lg: 0 14px 42px -8px rgba(20, 25, 40, .22), 0 4px 18px rgba(20, 25, 40, .10);
+  --shadow-focus: 0 0 0 3px rgba(0, 123, 255, .35);
+  --ease: cubic-bezier(.4, 0, .2, 1);
+  --gradient-accent: linear-gradient(90deg, #007bff 0%, #5a8dee 100%);
+  --gradient-accent-hover: linear-gradient(90deg, #0056b3 0%, #3a6fd8 100%);
+  --gradient-success: linear-gradient(90deg, #43cea2 0%, #185a9d 100%);
+  --gradient-success-hover: linear-gradient(90deg, #2ea97e 0%, #154b80 100%);
+  --gradient-bg: linear-gradient(135deg, #e0e7ff 0%, #f4f4f9 100%);
+  --color-bg: #f5f7fb;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f4f6fa;
+  --color-border: #e0e7ff;
+  --color-border-strong: #bfc9d9;
+  --color-text: #2d3a4a;
+  --color-text-soft: #586574;
+  --color-primary: #007bff;
+  --color-primary-hover: #0056b3;
+  --color-success: #2ea97e;
+  --color-danger: #ff4d4f;
+  --color-warning: #f5a623;
+  --focus-ring: 0 0 0 3px rgba(0, 123, 255, .35);
+  --transition-fast: .15s var(--ease);
+  --transition: .28s var(--ease);
+  --backdrop: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, .8), rgba(255, 255, 255, 0));
+}
+
+/* Dark theme tokens */
+[data-theme="dark"] {
+  --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #334155 100%);
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-surface-alt: #243447;
+  --color-border: #223147;
+  --color-border-strong: #33465f;
+  --color-text: #f1f5f9;
+  --color-text-soft: #cbd5e1;
+  --color-primary: #4ea8ff;
+  --color-primary-hover: #82c5ff;
+  --color-success: #4fd1b6;
+  --color-danger: #ff6466;
+  --focus-ring: 0 0 0 3px rgba(78, 168, 255, .5);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, .4);
+  --shadow-md: 0 6px 18px -4px rgba(0, 0, 0, .55);
+  --shadow-lg: 0 16px 48px -12px rgba(0, 0, 0, .65);
+  --gradient-accent: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+  --gradient-accent-hover: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+  --gradient-success: linear-gradient(90deg, #16a34a 0%, #0d9488 100%);
+  --gradient-success-hover: linear-gradient(90deg, #15803d 0%, #0f766e 100%);
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0 0 80px;
+  /* space for potential toast/footer */
+  min-height: 100vh;
+  background: var(--gradient-bg) fixed;
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-size: 180% 180%;
+  animation: gradientBG 18s ease-in-out infinite alternate;
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+  Keyframes for the animated background gradient.
+*/
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%
+  }
+
+  100% {
+    background-position: 100% 50%
+  }
+}
+
+/*
+  Styles for the main heading (h1).
+  - color, font-size, font-weight: Make the heading stand out.
+  - background-clip and text-fill-color: Create a gradient text effect.
+  - text-decoration: Adds an underline for emphasis.
+*/
+.top-bar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px clamp(18px, 3vw, 46px) 14px;
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(20px) saturate(180%);
+  background: linear-gradient(120deg, rgba(255, 255, 255, .75), rgba(255, 255, 255, .35)) var(--backdrop);
+  border-bottom: 1px solid var(--color-border);
+  z-index: 50;
+}
+
+[data-theme="dark"] .top-bar {
+  background: linear-gradient(120deg, rgba(30, 41, 59, .85), rgba(30, 41, 59, .5));
+}
+
+.app-title {
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  line-height: 1.1;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  position: relative;
+}
+
+.app-title::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  bottom: -6px;
+  width: 46%;
+  height: 3px;
+  border-radius: 4px;
+  background: var(--gradient-accent);
+  box-shadow: 0 2px 6px -1px rgba(0, 123, 255, .4);
+}
+
+.top-bar__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  --size: 44px;
+  width: var(--size);
+  height: var(--size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 1.2rem;
+  cursor: pointer;
+  position: relative;
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+}
+
+.icon-btn:hover {
+  background: var(--color-surface-alt);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.icon-btn:active {
+  transform: translateY(0);
+}
+
+.icon-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.app-shell {
+  width: min(1250px, 92%);
+  margin: 14px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+/*
+  Styles for the file input element.
+  - margin, padding, border, border-radius: Make the input visually appealing.
+  - box-shadow: Adds a subtle shadow for depth.
+  - transition: Smooth border color change on focus.
+*/
+/* Custom File Drop */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.file-drop {
+  background: var(--color-surface);
+  border: 2px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  padding: clamp(34px, 6vw, 72px) clamp(18px, 5vw, 60px);
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.file-drop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(0, 123, 255, .18), transparent 70%);
+  opacity: .4;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.file-drop__icon {
+  font-size: clamp(2.6rem, 6vw, 3.6rem);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, .15));
+}
+
+.file-drop__text {
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  color: var(--color-text-soft);
+}
+
+.file-drop__hint {
+  font-size: .8rem;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.file-drop:hover {
+  border-color: var(--color-primary);
+  background: linear-gradient(145deg, var(--color-surface), var(--color-surface-alt));
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.file-drop:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-color: var(--color-primary);
+}
+
+.file-drop.dragging {
+  border-style: solid;
+  border-color: var(--color-primary);
+  animation: pulseBorder 1.4s linear infinite;
+}
+
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, .35);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}
+
+/*
+  Highlight the file input when focused.
+*/
+/* Utility Buttons */
+.btn {
+  font-family: inherit;
+  position: relative;
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+button,
+.btn {
+  padding: 14px 32px;
+  background: var(--gradient-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: .5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  box-shadow: var(--shadow-sm);
+  transition: background var(--transition), transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+  backdrop-filter: saturate(140%);
+}
+
+button:hover,
+.btn:hover {
+  background: var(--gradient-accent-hover);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: var(--shadow-md);
+}
+
+button:active,
+.btn:active {
+  transform: translateY(-1px) scale(.995);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-success {
+  background: var(--gradient-success);
+}
+
+.btn-success:hover {
+  background: var(--gradient-success-hover);
+}
+
+.actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+/*
+  Styles for all buttons.
+  - padding, background, color, border-radius: Make buttons large and modern.
+  - box-shadow: Adds depth.
+  - transition: Smooth hover effect.
+  - margin-left: Adds spacing between buttons.
+*/
+/* Download Button Specific */
+.download-btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  filter: grayscale(.4) brightness(.9);
+  opacity: .65;
+}
+
+.download-btn.show {
+  filter: none;
+  opacity: 1;
+}
+
+/*
+  Special styles for the download button.
+  - Different gradient, hidden by default (display: none).
+  - .show class makes it visible when needed.
+  - SVG icon is aligned with text.
+*/
+/* refine download icon spacing */
+.download-btn svg {
+  margin-right: 4px;
+}
+
+/*
+  Styles for the suggestions/results box.
+  - margin, width, background, border-radius: Make it prominent and readable.
+  - box-shadow: Adds depth.
+  - font-size, color: Improves readability.
+  - border: Subtle border for separation.
+  - overflow: Prevents content from spilling out.
+*/
+/* Suggestions Panel */
+#suggestions.panel {
+  background: var(--color-surface);
+  border-radius: 20px;
+  padding: clamp(28px, 3vw, 42px) clamp(20px, 2.8vw, 38px) clamp(36px, 4vw, 50px);
+  border: 1.5px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+  min-height: 140px;
+  font-size: 1.06rem;
+  position: relative;
+  overflow: hidden;
+  line-height: 1.55;
+  letter-spacing: .25px;
+}
+
+[data-theme="dark"] #suggestions.panel {
+  background: linear-gradient(145deg, #1e293b, #243447);
+}
+
+#suggestions::before {
+  content: '';
+  position: absolute;
+  top: -140px;
+  left: -140px;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle at center, rgba(0, 123, 255, .07), transparent 70%);
+  pointer-events: none;
+}
+
+@media (max-width: 740px) {
+  #suggestions.panel {
+    border-radius: 16px;
+    padding: 28px 18px 40px;
+  }
+}
+
+#suggestions h2 {
+  margin-top: 0;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.25rem;
+  letter-spacing: .5px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+#suggestions h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 72px;
+  height: 3px;
+  border-radius: 4px;
+  background: var(--gradient-accent);
+  box-shadow: 0 2px 4px -1px rgba(0, 123, 255, .5);
+}
+
+#suggestions pre {
+  background: var(--color-surface-alt);
+  border-radius: var(--radius-md);
+  padding: 18px 20px 22px;
+  font-size: .98rem;
+  color: var(--color-text);
+  overflow-x: hidden;
+  /* remove horizontal scroll */
+  margin: 0;
+  border-left: 4px solid rgba(0, 123, 255, .15);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25);
+  max-height: 560px;
+  white-space: pre-wrap;
+  /* allow wrapping */
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  /* break very long tokens */
+}
+
+/* remove custom scrollbar since horizontal scrolling is disabled */
+[data-theme="dark"] #suggestions pre {
+  background: #1d2837;
+  border-left-color: rgba(78, 168, 255, .25);
+}
+
+/* Loading skeleton */
+.skeleton-block {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-surface-alt);
+  border-radius: 8px;
+  height: 18px;
+  margin: 10px 0;
+}
+
+.skeleton-block::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, .55) 35%, rgba(255, 255, 255, .75) 45%, transparent 65%);
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+[data-theme="dark"] .skeleton-block {
+  background: #223041;
+}
+
+[data-theme="dark"] .skeleton-block::after {
+  background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, .18) 35%, rgba(255, 255, 255, .24) 45%, transparent 65%);
+}
+
+/*
+  Styles for the AI rating section.
+  - Larger font, colored background, and border for emphasis.
+*/
+.rating-section {
+  font-size: 1.05rem;
+  margin: 0 0 16px;
+  color: var(--color-text);
+  background: linear-gradient(90deg, rgba(0, 123, 255, .08) 0%, rgba(0, 123, 255, .02) 100%);
+  border-radius: var(--radius-md);
+  padding: 10px 18px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  border-left: 5px solid var(--color-primary);
+  letter-spacing: .5px;
+}
+
+[data-theme="dark"] .rating-section {
+  background: linear-gradient(115deg, rgba(78, 168, 255, .25), rgba(78, 168, 255, .05));
+}
+
+.rating-value {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/*
+  Highlight for example or rewrite lines in suggestions.
+*/
+.example-highlight {
+  background: rgba(0, 123, 255, .12);
+  color: var(--color-primary);
+  border-radius: 5px;
+  padding: 3px 7px 4px;
+  margin: 3px 0;
+  display: inline-block;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(0, 123, 255, .25);
+}
+
+[data-theme="dark"] .example-highlight {
+  background: rgba(78, 168, 255, .2);
+}
+
+/*
+  Error message styling for user feedback.
+*/
+.error-message {
+  color: #fff;
+  background: linear-gradient(135deg, #ff4d4f, #d9363e);
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  margin-top: 18px;
+  box-shadow: var(--shadow-md);
+  max-width: 600px;
+  letter-spacing: .4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.error-message::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255, 255, 255, .18), transparent 60%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/*
+  Example section styling for the 10/10 rewritten section.
+*/
+.example-section {
+  background: linear-gradient(135deg, #f1f8e9, #f9fbe7);
+  border-left: 5px solid #8bc34a;
+  border-radius: var(--radius-md);
+  margin-top: 28px;
+  padding: 18px 20px 22px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .example-section {
+  background: linear-gradient(135deg, #274221, #1b2e18);
+  border-left-color: #6cbf4e;
+}
+
+.example-section h3 {
+  color: #4d7e26;
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  position: relative;
+}
+
+[data-theme="dark"] .example-section h3 {
+  color: #9ddc6f;
+}
+
+.example-section pre {
+  background: var(--color-surface-alt);
+  border-radius: 6px;
+  padding: 14px 16px 18px;
+  font-size: .95rem;
+  color: var(--color-text);
+  overflow-x: hidden;
+  margin: 0;
+  border-left: 3px solid rgba(139, 195, 74, .4);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+[data-theme="dark"] .example-section pre {
+  background: #16252f;
+}
+
+/*
+  Responsive styles for mobile devices (screen width <= 600px).
+  - Reduces padding and font sizes for better mobile experience.
+*/
+/* Loading indicator */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--color-primary);
+  letter-spacing: .5px;
+}
+
+.loading-indicator[hidden] {
+  display: none !important;
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(0, 123, 255, .25);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive refinements */
+@media (max-width: 880px) {
+  .actions-row {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 640px) {
+  .actions-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  button,
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .file-drop {
+    padding: 42px 20px 54px;
+  }
+
+  .app-shell {
+    width: 94%;
+  }
+
+  .app-title {
+    font-size: clamp(1.65rem, 7vw, 2.3rem);
+  }
+}
+
+/* Theming transition */
+body,
+body * {
+  transition: background-color .4s var(--ease), color .4s var(--ease), border-color .4s var(--ease);
+}
+
+/* Accessibility helpers */
+::selection {
+  background: rgba(0, 123, 255, .25);
+}
+
+[data-theme="dark"] ::selection {
+  background: rgba(78, 168, 255, .35);
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

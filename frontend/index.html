@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+      The <meta charset="UTF-8"> tag sets the character encoding for the document to UTF-8,
+      which includes most characters from all known languages.
+    -->
+    <meta charset="UTF-8">
+    <!--
+      The <meta name="viewport"> tag makes the website responsive on all devices
+      by setting the width to the device's width and the initial zoom level to 1.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--
+      The <title> tag sets the text shown in the browser tab.
+    -->
+    <title>Intelligent Resume Analyzer & Builder</title>
+    <!--
+      The following meta tags help with SEO (Search Engine Optimization) and social sharing.
+      They describe the page, set keywords, and provide information for social media previews.
+    -->
+    <meta name="description" content="AI-powered Resume Analyzer & Builder. Upload your resume and get actionable suggestions and examples for improvement.">
+    <meta name="keywords" content="resume, analyzer, builder, AI, job, suggestions, improvement, PDF, DOCX">
+    <meta name="author" content="Resume Analyzer Team">
+    <!-- Open Graph meta tags for better sharing on social media platforms -->
+    <meta property="og:title" content="Intelligent Resume Analyzer & Builder">
+    <meta property="og:description" content="Upload your resume and get AI-powered suggestions for improvement.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="favicon.ico">
+    <meta property="og:url" content="">
+    <!-- Twitter Card meta tags for Twitter sharing -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Intelligent Resume Analyzer & Builder">
+    <meta name="twitter:description" content="Upload your resume and get AI-powered suggestions for improvement.">
+    <meta name="twitter:image" content="favicon.ico">
+    <!--
+      The <link rel="icon"> tag sets the favicon (small icon in the browser tab).
+    -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!--
+      The <link rel="stylesheet"> tag links to the external CSS file for styling the page.
+    -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="top-bar">
+    <h1 class="app-title">Resume Analyzer & Builder</h1>
+    <div class="top-bar__actions">
+      <button id="themeToggle" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="icon-btn__icon" data-theme-icon>🌙</span>
+      </button>
+    </div>
+  </div>
+  <main class="app-shell">
+    <!-- Accessible custom file input -->
+    <input type="file" id="resumeUpload" accept=".pdf,.docx" class="visually-hidden" aria-describedby="fileHelp" />
+    <label for="resumeUpload" id="fileLabel" class="file-drop" tabindex="0">
+      <span class="file-drop__icon" aria-hidden="true">📄</span>
+      <span class="file-drop__text"><strong>Choose PDF or DOCX</strong> or drag & drop</span>
+      <span class="file-drop__hint" id="fileHelp">Max 5MB | Secure local upload</span>
+    </label>
+
+    <div class="actions-row">
+      <button onclick="uploadResume()" class="btn btn-primary" id="uploadBtn">Upload Resume</button>
+      <button id="downloadBtn" class="download-btn btn btn-success" aria-disabled="true">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 2v10m0 0l-4-4m4 4l4-4M4 16h12" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Download Analysis</span>
+      </button>
+      <div id="loading" class="loading-indicator" role="status" aria-live="polite" aria-atomic="true" hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        <span class="loading-text">Analyzing resume...</span>
+      </div>
+    </div>
+
+    <section id="suggestions" class="panel" aria-live="polite" aria-atomic="false"></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

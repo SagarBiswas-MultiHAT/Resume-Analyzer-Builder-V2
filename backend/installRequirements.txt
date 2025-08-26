@@ -1,0 +1,13 @@
+# Windows PowerShell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+
+pip install --upgrade pip
+
+pip install -r ".\backend\requirements.txt"
+
+# Install a spaCy English model (needed separately)
+python -m spacy download en_core_web_sm
+
+# run the application
+python .\backend\app.py
